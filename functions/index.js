@@ -5,16 +5,22 @@ admin.initializeApp(functions.config().firebase);
 exports.sendNotification = functions.database.ref('/notifications/chats/{pushId}').onCreate((event) => {
   // obtains the new notification
   const notification = event._data;
+  console.log(event);
 
   //extracts some data from the notification
   const deviceToSend = notification.receiver;
   const displayMessage = notification.message;
   const sender = notification.sender;
+  const senderData = JSON.stringify(notification.senderData);
+  console.log(senderData);
 
   const payload = {
-    data: {
+    notification: {
       title: displayMessage,
       body: "de " + sender
+    },
+    data: {
+      user: senderData
     }
   };
 
